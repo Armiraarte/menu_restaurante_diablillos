@@ -1,0 +1,6 @@
+{
+  "name": "Menú Digital Interactivo | Carta QR para Restaurantes",
+  "description": "Menú digital moderno, interactivo y visualmente atractivo para restaurantes. Optimizado para lectura de código QR móvil, personalización de platillos, catálogo en tiempo real y pedidos.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  }
+
+  .font-editorial {
+    font-family: 'Fraunces', Georgia, serif;
+    font-optical-sizing: auto;
+  }
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Borde de fuego: un degradado que gira alrededor del borde y un resplandor que parpadea. */
+@property --fire-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.fire-border {
+  position: relative;
+  animation: fire-flicker 2.4s ease-in-out infinite;
+}
+
+.fire-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: 1.5px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--fire-angle),
+    #7f1d1d, #ff3d00, #ff9100, #ffe082, #ff9100, #ff3d00, #7f1d1d, #ff3d00, #7f1d1d
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  animation: fire-spin 5s linear infinite;
+}
+
+@keyframes fire-spin {
+  to { --fire-angle: 360deg; }
+}
+
+@keyframes fire-flicker {
+  0%, 100% { box-shadow: 0 0 14px rgba(255, 80, 0, 0.30), 0 0 2px rgba(255, 160, 0, 0.5); }
+  35% { box-shadow: 0 0 22px rgba(255, 90, 0, 0.45), 0 0 3px rgba(255, 180, 40, 0.7); }
+  60% { box-shadow: 0 0 12px rgba(255, 60, 0, 0.25), 0 0 2px rgba(255, 140, 0, 0.45); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fire-border, .fire-border::before { animation: none; }
+}
