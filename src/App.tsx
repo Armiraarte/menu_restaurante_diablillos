@@ -3,6 +3,8 @@ import { AnimatePresence, motion } from 'motion/react';
 import { ChevronLeft, Flame } from 'lucide-react';
 import { CATEGORIES, RESTAURANT, type Dish, type MenuCategory } from './data/categories';
 import { VolcanoBackground } from './components/VolcanoBackground';
+import devil from './assets/images/diablo2-cutout.webp';
+import devilSitting from './assets/images/diablo1-cutout.webp';
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -60,7 +62,7 @@ export default function App() {
             selected ? 'pointer-events-none' : ''
           }`}
         >
-          <div className="flex flex-col items-center pb-8 pt-[calc(2.5rem+env(safe-area-inset-top))] text-center">
+          <div className="flex flex-col items-center pb-4 pt-[calc(2.5rem+env(safe-area-inset-top))] text-center">
             <motion.div
               layoutId="logo"
               transition={{ duration: 0.9, ease: EASE }}
@@ -83,6 +85,26 @@ export default function App() {
               {RESTAURANT.tagline}
             </motion.p>
           </div>
+
+          {/* Diablito sentado sobre el borde de los recuadros de categorías. */}
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.8 }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              transition: { delay: 0.35, type: 'spring', stiffness: 240, damping: 15 },
+            }}
+            className="pointer-events-none relative z-10 -mb-7 flex justify-center"
+          >
+            <motion.img
+              src={devilSitting}
+              alt=""
+              animate={{ y: [0, -5, 0], rotate: [0, 2, 0] }}
+              transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+              className="w-32 drop-shadow-[0_6px_18px_rgba(255,60,0,0.45)]"
+            />
+          </motion.div>
 
           <div className="grid grid-cols-2 gap-3">
             {CATEGORIES.map((cat, i) => {
@@ -193,23 +215,46 @@ function CategoryView({ category, onClose }: { category: MenuCategory; onClose: 
             <ChevronLeft className="h-6 w-6" />
           </motion.button>
 
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0, transition: { delay: 0.25, duration: 0.6, ease: EASE } }}
-            exit={{ opacity: 0, transition: { duration: 0.15 } }}
-            className="absolute inset-x-0 bottom-0 px-5"
-          >
-            <p className="text-xs uppercase tracking-[0.25em] text-orange-400">
-              {category.dishes.length} platillos
-            </p>
-            <h1 className="mt-1 text-4xl font-bold tracking-tight [text-shadow:0_2px_16px_rgba(0,0,0,0.8)]">
-              {category.name}
-            </h1>
-            <p className="mt-1 text-sm text-white/70">{category.description}</p>
-          </motion.div>
+          {/* El diablito presenta la categoría con la mano hacia la información. */}
+          <div className="absolute inset-x-0 bottom-0 z-10 flex items-end gap-2 pl-2 pr-5">
+            <motion.div
+              initial={{ opacity: 0, y: 80, rotate: -10 }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                rotate: 0,
+                transition: { delay: 0.45, type: 'spring', stiffness: 260, damping: 16 },
+              }}
+              exit={{ opacity: 0, y: 40, transition: { duration: 0.15 } }}
+              className="-mb-8 w-28 shrink-0"
+            >
+              <motion.img
+                src={devil}
+                alt=""
+                animate={{ y: [0, -6, 0], rotate: [0, -2, 0] }}
+                transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
+                className="w-full drop-shadow-[0_6px_18px_rgba(255,60,0,0.45)]"
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: -16 }}
+              animate={{ opacity: 1, x: 0, transition: { delay: 0.6, duration: 0.6, ease: EASE } }}
+              exit={{ opacity: 0, transition: { duration: 0.15 } }}
+              className="min-w-0 pb-2"
+            >
+              <p className="text-xs uppercase tracking-[0.25em] text-orange-400">
+                {category.dishes.length} platillos
+              </p>
+              <h1 className="mt-1 text-3xl font-bold leading-tight tracking-tight [text-shadow:0_2px_16px_rgba(0,0,0,0.8)]">
+                {category.name}
+              </h1>
+              <p className="mt-1 text-sm text-white/70">{category.description}</p>
+            </motion.div>
+          </div>
         </div>
 
-        <ul className="mt-6 space-y-3 px-4">
+        <ul className="mt-10 space-y-3 px-4">
           {category.dishes.map((dish, i) => (
             <motion.li
               key={dish.id}
